@@ -1,73 +1,109 @@
-# Image Processing API
+<div align="center">
 
-A Flask-based REST API for AI-powered image processing operations. This API provides endpoints for various image manipulation tasks including filtering, enhancement, and AI-based transformations.
+# 🎨 Image Processing API
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-2.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.x-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org/)
+[![DeepAI](https://img.shields.io/badge/DeepAI-API-FF6F61?style=for-the-badge)](https://deepai.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-- **Local Processing**: Blur, denoise using OpenCV
-- **AI-Powered**: Colorization, super resolution, background removal via DeepAI API
+**A powerful Flask-based REST API for AI-powered image processing operations**
 
-## Installation
+*Transform your images with blur effects, denoising, AI colorization, super resolution, and background removal*
+
+---
+
+### 🖼️ UI Preview
+
+<img src="assets/ui_preview.png" alt="Image Processing API Dashboard" width="800"/>
+
+</div>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td>
+
+### 🔧 Local Processing
+- **Gaussian Blur** - Smooth & noise reduction
+- **Median Blur** - Salt-and-pepper noise removal
+- **Bilateral Filter** - Edge-preserving smoothing
+- **Motion Blur** - Directional blur effects
+- **Denoising** - Advanced noise removal
+
+</td>
+<td>
+
+### 🤖 AI-Powered
+- **Colorization** - Add colors to B&W images
+- **Super Resolution** - 4x upscaling with SRGAN
+- **Background Removal** - AI segmentation
+- **Powered by DeepAI** - State-of-the-art models
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.9+
 - pip package manager
-- DeepAI API key (free tier available at [deepai.org](https://deepai.org))
+- DeepAI API key (free tier at [deepai.org](https://deepai.org))
 
-### Setup
+### Installation
 
-1. **Clone and navigate to directory**:
-   ```bash
-   cd image_processing
-   ```
+```bash
+# Clone and navigate to directory
+cd image_processing
 
-2. **Create virtual environment**:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install dependencies
+pip install -r requirements.txt
 
-4. **Set DeepAI API key**:
-   ```bash
-   export DEEPAI_API_KEY="your-api-key-here"
-   ```
+# Set DeepAI API key
+export DEEPAI_API_KEY="your-api-key-here"
 
-5. **Run the application**:
-   ```bash
-   python app.py
-   ```
-
-The API will start on `http://localhost:5000`
-
-## API Endpoints
-
-### Health Check
+# Run the application
+python app.py
 ```
+
+🌐 API starts on `http://localhost:5000`
+
+---
+
+## 📡 API Endpoints
+
+### 🏥 Health Check
+```http
 GET /api/v1/images/health
 ```
 
-### Blur Image
-```
+---
+
+### 🌫️ Blur Image
+```http
 POST /api/v1/images/blur
 ```
 
-Apply blur filter to an image.
-
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| image | File | - | Image file to process |
-| image_url | String | - | URL of image (alternative to file) |
-| method | String | gaussian | Blur method: gaussian, median, bilateral, box, motion |
-| kernel_size | Integer | 5 | Size of blur kernel (must be odd) |
-| sigma | Float | 0 | Sigma for Gaussian blur |
+| `image` | File | - | Image file to process |
+| `image_url` | String | - | URL of image (alternative) |
+| `method` | String | `gaussian` | `gaussian`, `median`, `bilateral`, `box`, `motion` |
+| `kernel_size` | Integer | `5` | Size of blur kernel (odd number) |
+| `sigma` | Float | `0` | Sigma for Gaussian blur |
 
-**Example**:
 ```bash
 curl -X POST http://localhost:5000/api/v1/images/blur \
   -F "image=@photo.jpg" \
@@ -75,151 +111,134 @@ curl -X POST http://localhost:5000/api/v1/images/blur \
   -F "kernel_size=5"
 ```
 
-### Denoise Image
-```
+---
+
+### 🔇 Denoise Image
+```http
 POST /api/v1/images/denoise
 ```
 
-Remove noise from an image.
-
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| image | File | - | Image file to process |
-| method | String | nlm_color | Method: nlm, nlm_color, bilateral, morphological, adaptive |
-| h | Float | 10 | Filter strength (higher = more noise removal) |
+| `image` | File | - | Image file to process |
+| `method` | String | `nlm_color` | `nlm`, `nlm_color`, `bilateral`, `morphological`, `adaptive` |
+| `h` | Float | `10` | Filter strength |
 
-**Example**:
-```bash
-curl -X POST http://localhost:5000/api/v1/images/denoise \
-  -F "image=@noisy_image.jpg" \
-  -F "method=nlm_color" \
-  -F "h=10"
-```
+---
 
-### Colorize Image (DeepAI)
-```
+### 🎨 Colorize Image (AI)
+```http
 POST /api/v1/images/colorize
 ```
 
-Add color to black and white images using AI.
+Transform black & white images into vivid color using neural networks.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| image | File | - | B&W image file to colorize |
-| save_local | Boolean | true | Save result locally |
-
-**Example**:
 ```bash
 curl -X POST http://localhost:5000/api/v1/images/colorize \
   -F "image=@bw_photo.jpg"
 ```
 
-### Super Resolution (DeepAI)
-```
+---
+
+### 🔍 Super Resolution (AI)
+```http
 POST /api/v1/images/super-resolution
 ```
 
-Upscale images using AI while maintaining quality.
+Upscale images 4x using SRGAN while preserving detail.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| image | File | - | Image file to upscale |
-| save_local | Boolean | true | Save result locally |
+---
 
-**Example**:
-```bash
-curl -X POST http://localhost:5000/api/v1/images/super-resolution \
-  -F "image=@small_image.jpg"
-```
-
-### Remove Background (DeepAI)
-```
+### ✂️ Remove Background (AI)
+```http
 POST /api/v1/images/remove-background
 ```
 
-Automatically remove background from images.
+AI-powered automatic background removal.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| image | File | - | Image file |
-| save_local | Boolean | true | Save result locally |
+---
 
-**Example**:
-```bash
-curl -X POST http://localhost:5000/api/v1/images/remove-background \
-  -F "image=@portrait.jpg"
-```
+## 🧠 Processing Models
 
-## Image Processing Models Used
-
-### 1. Blur Filters (OpenCV)
+<details>
+<summary><b>📊 Blur Filters (OpenCV)</b></summary>
 
 | Method | Description | Best For |
 |--------|-------------|----------|
-| **Gaussian Blur** | Smooths using Gaussian kernel | General smoothing, noise reduction |
-| **Median Blur** | Replaces pixel with median of neighbors | Salt-and-pepper noise |
-| **Bilateral Filter** | Edge-preserving smoothing | Preserving edges while smoothing |
-| **Box Blur** | Simple averaging filter | Fast, basic smoothing |
-| **Motion Blur** | Directional blur effect | Simulating motion |
+| **Gaussian** | Gaussian kernel smoothing | General smoothing |
+| **Median** | Median of neighbors | Salt-and-pepper noise |
+| **Bilateral** | Edge-preserving | Preserving edges |
+| **Box** | Simple averaging | Fast smoothing |
+| **Motion** | Directional blur | Motion effects |
 
-### 2. Denoising Methods (OpenCV)
+</details>
+
+<details>
+<summary><b>🔇 Denoising Methods (OpenCV)</b></summary>
 
 | Method | Description | Best For |
 |--------|-------------|----------|
-| **NLM (Non-Local Means)** | Compares patches across image | High-quality denoising |
-| **NLM Colored** | NLM for color images | Color image denoising |
-| **Bilateral** | Edge-preserving denoising | Preserving sharp edges |
-| **Morphological** | Opening/closing operations | Binary and grayscale noise |
-| **Adaptive** | Adaptive thresholding | Document cleanup |
+| **NLM** | Non-Local Means | High-quality denoising |
+| **NLM Colored** | NLM for color | Color images |
+| **Bilateral** | Edge-preserving | Sharp edges |
+| **Morphological** | Opening/closing | Binary noise |
+| **Adaptive** | Adaptive threshold | Documents |
 
-### 3. DeepAI API Models
+</details>
+
+<details>
+<summary><b>🤖 DeepAI Models</b></summary>
 
 | Endpoint | Model | Description |
 |----------|-------|-------------|
-| **Colorizer** | Neural Colorization | Adds realistic colors to grayscale images using deep learning |
-| **torch-srgan** | SRGAN | Super Resolution GAN for 4x upscaling with detail preservation |
-| **background-remover** | Semantic Segmentation | Detects and removes backgrounds using AI segmentation |
+| **Colorizer** | Neural Colorization | Deep learning colorization |
+| **torch-srgan** | SRGAN | 4x upscaling with GAN |
+| **background-remover** | Semantic Segmentation | AI background removal |
 
-## Project Structure
+</details>
+
+---
+
+## 📁 Project Structure
 
 ```
 image_processing/
-├── app.py                      # Flask application entry point
-├── requirements.txt            # Dependencies
-├── README.md                   # This file
-├── config/
-│   └── settings.py             # Configuration
-├── controllers/
-│   └── image_controller.py     # REST API endpoints
-├── services/
-│   ├── base_processor.py       # Abstract base class
-│   ├── filtering/
-│   │   ├── blur_service.py     # Blur operations
-│   │   └── denoise_service.py  # Denoising operations
-│   ├── enhancement/
-│   │   ├── colorization_service.py  # AI colorization
-│   │   └── super_resolution_service.py  # AI upscaling
-│   └── detection/
-│       └── background_removal_service.py  # AI background removal
-├── models/
-│   └── image_result.py         # Result data models
-├── utils/
-│   └── image_utils.py          # Image I/O utilities
-└── external_apis/
-    ├── base_client.py          # Abstract API client
-    └── deepai_client.py        # DeepAI integration
+├── 📄 app.py                      # Flask entry point
+├── 📄 requirements.txt            # Dependencies
+├── 📁 assets/                     # UI assets & images
+├── 📁 config/
+│   └── settings.py                # Configuration
+├── 📁 controllers/
+│   └── image_controller.py        # REST API endpoints
+├── 📁 services/
+│   ├── base_processor.py          # Abstract base class
+│   ├── 📁 filtering/
+│   │   ├── blur_service.py        # Blur operations
+│   │   └── denoise_service.py     # Denoising
+│   ├── 📁 enhancement/
+│   │   ├── colorization_service.py
+│   │   └── super_resolution_service.py
+│   └── 📁 detection/
+│       └── background_removal_service.py
+├── 📁 models/
+│   └── image_result.py            # Result models
+├── 📁 utils/
+│   └── image_utils.py             # Image I/O utilities
+└── 📁 external_apis/
+    ├── base_client.py             # Abstract API client
+    └── deepai_client.py           # DeepAI integration
 ```
 
-## Response Format
+---
 
-All endpoints return JSON with the following structure:
+## 📋 Response Format
 
 ```json
 {
   "status": "success",
   "operation": "blur",
   "message": "Successfully applied gaussian blur",
-  "output_url": "https://...",      // For AI operations
+  "output_url": "https://...",
   "output_path": "output/abc123.png",
   "processing_time": 0.45,
   "metadata": {
@@ -230,12 +249,24 @@ All endpoints return JSON with the following structure:
 }
 ```
 
-## Environment Variables
+---
+
+## ⚙️ Environment Variables
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `DEEPAI_API_KEY` | DeepAI API key for AI features | Yes (for AI endpoints) |
+| `DEEPAI_API_KEY` | DeepAI API key for AI features | ✅ (for AI endpoints) |
 
-## License
+---
 
-MIT License
+<div align="center">
+
+## 📜 License
+
+MIT License © 2024
+
+---
+
+**Made with ❤️ using Flask, OpenCV & DeepAI**
+
+</div>
