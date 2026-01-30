@@ -1,237 +1,276 @@
-# Time Series Forecasting API
+<div align="center">
 
-A Flask-based REST API for time series data fetching, forecasting, and evaluation. This API integrates with free external data sources and provides multiple statistical and machine learning models for forecasting.
+# 📈 Time Series Forecasting API
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-2.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-- **Live Data Fetching**: Weather data from Open-Meteo, Currency rates from Frankfurter
-- **Statistical Models**: ARIMA, ETS (Exponential Smoothing), Moving Averages
-- **ML Models**: Linear/Polynomial Regression, Neural Networks
-- **Comprehensive Metrics**: RMSE, MAE, MAPE, SMAPE, R²
+**A powerful Flask-based REST API for time series forecasting and analysis**
 
-## Installation
+*Fetch live data • Multiple forecasting models • Comprehensive evaluation metrics*
+
+---
+
+### 📊 UI Preview
+
+<img src="assets/ui_preview.png" alt="Time Series Forecasting API Dashboard" width="800"/>
+
+</div>
+
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td>
+
+### 📡 Live Data Sources
+- **Open-Meteo** - Weather data worldwide
+- **Frankfurter** - Currency exchange rates
+- **No API keys required!**
+
+</td>
+<td>
+
+### 🧮 Statistical Models
+- **ARIMA** - Autoregressive models
+- **ETS** - Exponential smoothing
+- **Moving Averages** - SMA, WMA, EMA
+
+</td>
+<td>
+
+### 🤖 ML Models
+- **Linear Regression** - Trend fitting
+- **Polynomial** - Non-linear trends
+- **Neural Networks** - Deep learning
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.9+
 - pip package manager
 
-### Setup
+### Installation
 
-1. **Navigate to directory**:
-   ```bash
-   cd time_series_forecasting
-   ```
+```bash
+# Navigate to directory
+cd time_series_forecasting
 
-2. **Create virtual environment**:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install dependencies
+pip install -r requirements.txt
 
-4. **Run the application**:
-   ```bash
-   python app.py
-   ```
-
-The API will start on `http://localhost:5001`
-
-## API Endpoints
-
-### Health Check
+# Run the application
+python app.py
 ```
+
+🌐 API starts on `http://localhost:5001`
+
+---
+
+## 📡 API Endpoints
+
+### 🏥 Health Check
+```http
 GET /api/v1/health
 ```
 
 ---
 
-## Data Fetching Endpoints
+## 📦 Data Fetching
 
-### Get Weather Data
-```
+### 🌤️ Weather Data
+```http
 GET /api/v1/datasets/weather
 ```
 
-Fetch historical weather data from Open-Meteo API (no authentication required).
-
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| location | String | new_york | Location name |
-| days | Integer | 30 | Days of historical data |
-| variable | String | temperature_2m | Weather variable |
+| `location` | String | `new_york` | Location name |
+| `days` | Integer | `30` | Days of historical data |
+| `variable` | String | `temperature_2m` | Weather variable |
 
-**Available Locations**: new_york, london, tokyo, paris, sydney, mumbai
+**📍 Available Locations**: `new_york`, `london`, `tokyo`, `paris`, `sydney`, `mumbai`
 
-**Example**:
 ```bash
 curl "http://localhost:5001/api/v1/datasets/weather?location=london&days=14"
 ```
 
-### Get Currency Data
-```
+---
+
+### 💱 Currency Data
+```http
 GET /api/v1/datasets/currency
 ```
 
-Fetch historical exchange rates from Frankfurter API (no authentication required).
-
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| base | String | EUR | Base currency code |
-| target | String | USD | Target currency code |
-| days | Integer | 30 | Days of historical data |
+| `base` | String | `EUR` | Base currency code |
+| `target` | String | `USD` | Target currency code |
+| `days` | Integer | `30` | Days of historical data |
 
-**Example**:
 ```bash
 curl "http://localhost:5001/api/v1/datasets/currency?base=GBP&target=INR&days=30"
 ```
 
 ---
 
-## Forecasting Endpoints
+## 🔮 Forecasting Endpoints
 
-All forecasting endpoints accept POST requests with JSON body.
-
-### ARIMA Forecast
-```
+### 📊 ARIMA Forecast
+```http
 POST /api/v1/forecast/arima
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| values | Array | required | Time series values |
-| timestamps | Array | auto | Timestamps for values |
-| forecast_steps | Integer | 10 | Steps to forecast |
-| order | Array | [5,1,0] | ARIMA order [p,d,q] |
+| `values` | Array | *required* | Time series values |
+| `timestamps` | Array | auto | Timestamps |
+| `forecast_steps` | Integer | `10` | Steps to forecast |
+| `order` | Array | `[5,1,0]` | ARIMA order `[p,d,q]` |
 
-**Example**:
 ```bash
 curl -X POST http://localhost:5001/api/v1/forecast/arima \
   -H "Content-Type: application/json" \
   -d '{"values": [10, 12, 14, 13, 15, 17, 16, 18, 20, 19], "forecast_steps": 5}'
 ```
 
-### ETS (Exponential Smoothing) Forecast
-```
+---
+
+### 📈 ETS Forecast
+```http
 POST /api/v1/forecast/ets
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| values | Array | required | Time series values |
-| forecast_steps | Integer | 10 | Steps to forecast |
-| trend | String | add | Trend: 'add', 'mul', or null |
-| seasonal | String | null | Seasonal: 'add', 'mul', or null |
-| seasonal_periods | Integer | null | Length of seasonal cycle |
+| `values` | Array | *required* | Time series values |
+| `forecast_steps` | Integer | `10` | Steps to forecast |
+| `trend` | String | `add` | `add`, `mul`, or `null` |
+| `seasonal` | String | `null` | `add`, `mul`, or `null` |
+| `seasonal_periods` | Integer | `null` | Seasonal cycle length |
 
-### Moving Average Forecast
-```
+---
+
+### 📉 Moving Average
+```http
 POST /api/v1/forecast/moving-average
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| values | Array | required | Time series values |
-| forecast_steps | Integer | 10 | Steps to forecast |
-| window_size | Integer | 5 | MA window size |
-| method | String | sma | 'sma', 'wma', or 'ema' |
+| `values` | Array | *required* | Time series values |
+| `forecast_steps` | Integer | `10` | Steps to forecast |
+| `window_size` | Integer | `5` | MA window size |
+| `method` | String | `sma` | `sma`, `wma`, or `ema` |
 
-### Linear Regression Forecast
-```
+---
+
+### 📐 Linear Regression
+```http
 POST /api/v1/forecast/linear-regression
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| values | Array | required | Time series values |
-| forecast_steps | Integer | 10 | Steps to forecast |
-| degree | Integer | 1 | Polynomial degree |
+| `values` | Array | *required* | Time series values |
+| `forecast_steps` | Integer | `10` | Steps to forecast |
+| `degree` | Integer | `1` | Polynomial degree |
 
-### Neural Network Forecast
-```
+---
+
+### 🧠 Neural Network
+```http
 POST /api/v1/forecast/neural-network
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| values | Array | required | Time series values |
-| forecast_steps | Integer | 10 | Steps to forecast |
-| sequence_length | Integer | 10 | Input sequence length |
-| epochs | Integer | 50 | Training epochs |
+| `values` | Array | *required* | Time series values |
+| `forecast_steps` | Integer | `10` | Steps to forecast |
+| `sequence_length` | Integer | `10` | Input sequence length |
+| `epochs` | Integer | `50` | Training epochs |
 
 ---
 
-## Pipeline Endpoints (Quick Start)
+## ⚡ Pipeline Endpoints
 
-Complete data fetching + forecasting in one call.
+*Complete data fetching + forecasting in one call!*
 
-### Weather Forecast Pipeline
-```
+### 🌤️ Weather Forecast Pipeline
+```http
 GET /api/v1/pipeline/weather-forecast
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| location | String | new_york | Location name |
-| days | Integer | 30 | Historical days |
-| forecast_steps | Integer | 7 | Steps to forecast |
-| model | String | arima | Model: arima, ets, ma, lr |
+| `location` | String | `new_york` | Location name |
+| `days` | Integer | `30` | Historical days |
+| `forecast_steps` | Integer | `7` | Steps to forecast |
+| `model` | String | `arima` | `arima`, `ets`, `ma`, `lr` |
 
-**Example**:
 ```bash
 curl "http://localhost:5001/api/v1/pipeline/weather-forecast?location=tokyo&model=ets&forecast_steps=7"
 ```
 
-### Currency Forecast Pipeline
-```
+---
+
+### 💱 Currency Forecast Pipeline
+```http
 GET /api/v1/pipeline/currency-forecast
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| base | String | EUR | Base currency |
-| target | String | USD | Target currency |
-| days | Integer | 30 | Historical days |
-| forecast_steps | Integer | 7 | Steps to forecast |
-| model | String | arima | Model to use |
+| `base` | String | `EUR` | Base currency |
+| `target` | String | `USD` | Target currency |
+| `days` | Integer | `30` | Historical days |
+| `forecast_steps` | Integer | `7` | Steps to forecast |
+| `model` | String | `arima` | Model to use |
 
 ---
 
-## Evaluation Endpoints
+## 📏 Evaluation Endpoints
 
-### Evaluate Forecast
-```
+### 📊 Evaluate Forecast
+```http
 POST /api/v1/evaluate
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| actual | Array | Actual values |
-| predicted | Array | Predicted values |
-
-**Example**:
 ```bash
 curl -X POST http://localhost:5001/api/v1/evaluate \
   -H "Content-Type: application/json" \
   -d '{"actual": [10, 12, 14, 13, 15], "predicted": [11, 13, 13, 14, 14]}'
 ```
 
-### Compare Models
-```
+### 🔄 Compare Models
+```http
 POST /api/v1/evaluate/compare
 ```
 
-Compare multiple model predictions.
+Compare multiple model predictions side by side.
 
 ---
 
-## Statistical Models Used
+## 🧠 Forecasting Models
 
-### 1. ARIMA (AutoRegressive Integrated Moving Average)
+<details>
+<summary><b>📊 ARIMA (AutoRegressive Integrated Moving Average)</b></summary>
 
 | Component | Description |
 |-----------|-------------|
@@ -241,7 +280,10 @@ Compare multiple model predictions.
 
 **Best for**: Data with trends and autocorrelation
 
-### 2. ETS (Error, Trend, Seasonal)
+</details>
+
+<details>
+<summary><b>📈 ETS (Error, Trend, Seasonal)</b></summary>
 
 | Method | Description |
 |--------|-------------|
@@ -251,7 +293,10 @@ Compare multiple model predictions.
 
 **Best for**: Data with clear trend and/or seasonal patterns
 
-### 3. Moving Average
+</details>
+
+<details>
+<summary><b>📉 Moving Average</b></summary>
 
 | Type | Description |
 |------|-------------|
@@ -261,9 +306,10 @@ Compare multiple model predictions.
 
 **Best for**: Short-term forecasting, trend smoothing
 
-### 4. Linear Regression
+</details>
 
-Fits a linear (or polynomial) function to model the trend.
+<details>
+<summary><b>📐 Linear Regression</b></summary>
 
 | Degree | Description |
 |--------|-------------|
@@ -273,9 +319,10 @@ Fits a linear (or polynomial) function to model the trend.
 
 **Best for**: Data with clear linear trends
 
-### 5. Neural Network
+</details>
 
-Feedforward neural network with configurable architecture.
+<details>
+<summary><b>🧠 Neural Network</b></summary>
 
 | Feature | Description |
 |---------|-------------|
@@ -285,67 +332,94 @@ Feedforward neural network with configurable architecture.
 
 **Best for**: Complex non-linear patterns
 
+</details>
+
 ---
 
-## Evaluation Metrics
+## 📏 Evaluation Metrics
 
 | Metric | Formula | Interpretation |
 |--------|---------|----------------|
 | **RMSE** | √(mean(errors²)) | Lower is better, penalizes large errors |
-| **MAE** | mean(\|errors\|) | Lower is better, more robust to outliers |
+| **MAE** | mean(\|errors\|) | Lower is better, robust to outliers |
 | **MAPE** | mean(\|errors/actual\|) × 100 | Percentage error |
 | **SMAPE** | Symmetric MAPE | Handles zeros better |
 | **R²** | 1 - (SS_res/SS_tot) | 1.0 = perfect, 0 = mean baseline |
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 time_series_forecasting/
-├── app.py                      # Flask application
-├── requirements.txt            # Dependencies
-├── README.md                   # This file
-├── config/
-│   └── settings.py             # Configuration
-├── controllers/
-│   └── forecast_controller.py  # REST API endpoints
-├── services/
-│   ├── base_analyzer.py        # Abstract base class
-│   ├── statistical/
+├── 📄 app.py                      # Flask application
+├── 📄 requirements.txt            # Dependencies
+├── 📁 assets/                     # UI assets & images
+├── 📁 config/
+│   └── settings.py                # Configuration
+├── 📁 controllers/
+│   └── forecast_controller.py     # REST API endpoints
+├── 📁 services/
+│   ├── base_analyzer.py           # Abstract base class
+│   ├── 📁 statistical/
 │   │   ├── arima_service.py
 │   │   ├── ets_service.py
 │   │   └── moving_average_service.py
-│   ├── ml_based/
+│   ├── 📁 ml_based/
 │   │   ├── linear_regression_service.py
 │   │   └── neural_network_service.py
-│   └── evaluation/
+│   └── 📁 evaluation/
 │       └── metrics_service.py
-├── models/
+├── 📁 models/
 │   ├── forecast_result.py
 │   └── time_series_data.py
-├── utils/
+├── 📁 utils/
 │   └── data_utils.py
-└── external_apis/
+└── 📁 external_apis/
     ├── base_client.py
     ├── open_meteo_client.py
     └── frankfurter_client.py
 ```
 
-## External APIs Used
+---
 
-### Open-Meteo
-- **URL**: https://open-meteo.com/
-- **Authentication**: None required
-- **Rate Limit**: 10,000 requests/day
-- **Data**: Historical weather data worldwide
+## 🌐 External APIs
 
-### Frankfurter
-- **URL**: https://frankfurter.app/
-- **Authentication**: None required
-- **Data Source**: European Central Bank
-- **Data**: Historical exchange rates
+<table>
+<tr>
+<td align="center">
 
-## License
+### 🌤️ Open-Meteo
+**URL**: [open-meteo.com](https://open-meteo.com/)
 
-MIT License
+✅ No authentication required  
+📊 10,000 requests/day  
+🌍 Global weather data
+
+</td>
+<td align="center">
+
+### 💱 Frankfurter
+**URL**: [frankfurter.app](https://frankfurter.app/)
+
+✅ No authentication required  
+🏦 European Central Bank data  
+📈 Historical exchange rates
+
+</td>
+</tr>
+</table>
+
+---
+
+<div align="center">
+
+## 📜 License
+
+MIT License © 2024
+
+---
+
+**Made with ❤️ using Flask, NumPy, Pandas & Statsmodels**
+
+</div>
